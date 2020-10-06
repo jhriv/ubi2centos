@@ -7,16 +7,12 @@ LABEL author="John H. Robinson, IV <jhriv@ucla.edu>"
 LABEL description="CentOS8 Base Image, based on UBI8 minimal"
 
 # Remove RHEL
-RUN rm \
-  /etc/dnf/protected.d/redhat-release.conf \
-  /etc/yum.repos.d/ubi.repo
-RUN microdnf remove \
-  redhat-release \
-  setup \
-  shadow-utils
+RUN rm /etc/yum.repos.d/ubi.repo
 RUN rpm --erase \
   gpg-pubkey-d4082792-5b32db75 \
-  gpg-pubkey-fd431d51-4ae0493b
+  gpg-pubkey-fd431d51-4ae0493b \
+  redhat-release \
+  setup
 
 # Convert to CentOS
 RUN rpm --install --force \
@@ -24,10 +20,10 @@ RUN rpm --install --force \
   $mirror/centos-release-$ver.el8.x86_64.rpm \
   $mirror/centos-repos-$ver.el8.x86_64.rpm \
   $mirror/libdnf-0.39.1-6.el8_2.x86_64.rpm \
-  $mirror/libsemanage-2.9-2.el8.x86_64.rpm \
-  $mirror/setup-2.12.2-5.el8.noarch.rpm \
-  $mirror/shadow-utils-4.6-8.el8.x86_64.rpm
+  $mirror/setup-2.12.2-5.el8.noarch.rpm
 RUN rpm --import /etc/pki/rpm-gpg/*
 
 # Clean up RPM remnants
-RUN rm /etc/hosts.rpmnew
+RUN rm \
+  /etc/hosts.rpmnew \
+  /etc/shadow.rpmsave
