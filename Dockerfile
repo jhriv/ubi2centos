@@ -14,6 +14,9 @@ RUN dnf remove --assumeyes \
   dnf-plugin-subscription-manager \
   redhat-release \
   subscription-manager
+RUN rpm --erase \
+  gpg-pubkey-d4082792-5b32db75 \
+  gpg-pubkey-fd431d51-4ae0493b
 
 # Convert to CentOS
 RUN dnf install --assumeyes --releasever=$ver \
@@ -25,6 +28,7 @@ RUN dnf reinstall --assumeyes \
   setup \
   shadow-utils \
   systemd
+RUN rpm --import /etc/pki/rpm-gpg/*
 
 # Clean up RPM remnants
 RUN dnf clean all
