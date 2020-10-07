@@ -1,4 +1,9 @@
-FROM registry.redhat.io/ubi8/ubi:latest
+ARG registry=registry.redhat.io
+FROM $registry/ubi8/ubi-minimal:latest
+
+# If you don't have, or don't want, a Red Hat Developer account add:
+# --build-arg registry=registry.access.redhat.com
+# to docker build invocation
 
 ARG mirror=http://mirror.centos.org/centos/8/BaseOS/x86_64/os/Packages
 ARG ver=8.2-2.2004.0.2
